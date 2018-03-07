@@ -35,14 +35,20 @@ class SequenceMatcher(object):
         indices = []
         for i in range(0, self.__size):
             indices.append(0)
+        last_set = None
+        begins = list(indices)
         for line in self.__lines:
+            if not last_set is None and line != last_set:
+                opcodes.append((action, begins, list(indices)))
+                begins = list(indices)
             if len(line) == self.__size:
                 action = 'equal'
             else:
                 action = 'complicated'
-            begins = list(indices)
             for i in range(0, self.__size):
                 if i in line:
                     indices[i] += 1
-            opcodes.append((action, begins, list(indices)))
+            last_set = line
+        if begins != indices:
+            opcodes.append((action, begins, indices))
         return opcodes
