@@ -35,7 +35,7 @@ class SequenceMatcher(object):
         indices = []
         for i in range(0, self.__size):
             indices.append(0)
-        last_set = None
+        action = last_set = None
         begins = list(indices)
         for line in self.__lines:
             if not last_set is None and line != last_set:
